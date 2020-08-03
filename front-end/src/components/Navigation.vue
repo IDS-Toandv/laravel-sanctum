@@ -5,9 +5,9 @@
         <router-link class="navbar-brand" to="/">IDS VN</router-link>
       </div>
       <ul class="nav navbar-nav">
+        <router-link class="nav-item nav-link" :to="{ name: 'AllBooks' }">Dashboard</router-link>
         <router-link v-if="!isLoggedIn" class="nav-item nav-link" :to="{ name: 'Login' }">Login</router-link>
         <router-link v-if="!isLoggedIn" class="nav-item nav-link" :to="{ name: 'Register' }">Register</router-link>
-        <router-link v-if="isLoggedIn" class="nav-item nav-link" :to="{ name: 'AllBooks' }">Dashboard</router-link>
         <router-link v-if="isLoggedIn" class="nav-item nav-link" :to="{ name: 'Add' }">Add Book</router-link>
         <a class="nav-item nav-link" v-if="isLoggedIn" @click.prevent="logout" href="#">Logout</a>
       </ul>
@@ -38,7 +38,7 @@ export default {
       User.logout().then(() => {
         localStorage.removeItem("auth");
         this.isLoggedIn = false;
-        this.$router.push({ name: "AllBooks" });
+          this.$router.push("/").catch(()=>{});
       });
     }
   }

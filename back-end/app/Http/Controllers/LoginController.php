@@ -22,13 +22,18 @@ class LoginController extends Controller
                 'errors' => ['email' => ['The provided credentials are incorrect.']]],
                 401);
         }
+        $infoToken = $user->createToken($credentials['email'], ['sever:createNewToken']);
         return response()->json([
-            'token_access' => $user->createToken($credentials['email'])->plainTextToken
+            'token_access' => $infoToken->plainTextToken,
+            'id_token' => $infoToken->accessToken->id,
+            'email' => $credentials['email']
         ]);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
+        $user = User::where('email', $request->emailLogin)->first();
+        $user->tokens()->where('id', $request->idToken)->delete();
         Auth::logout();
     }
 }

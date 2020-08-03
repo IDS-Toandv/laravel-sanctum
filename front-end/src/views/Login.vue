@@ -37,9 +37,9 @@ export default {
     login() {
       User.login(this.form)
         .then((resp) => {
-          const token = resp.data.token_access;
-          localStorage.setItem("token", token);
-          axios.defaults.headers.common['Authorization'] = "Bearer " + token;
+          localStorage.setItem("idToken", resp.data.id_token);
+          localStorage.setItem("email", resp.data.email);
+          axios.defaults.headers.common['Authorization'] = "Bearer " + resp.data.token_access;
           this.$root.$emit("login", true);
           localStorage.setItem("auth", "true");
           this.$router.push({ name: "AllBooks" });
@@ -48,6 +48,8 @@ export default {
             console.log(error);
           if (error.response.status === 401) {
             this.errors = error.response.data.errors;
+             this.$router.push("/").catch(()=>{});
+
           }
         });
     }

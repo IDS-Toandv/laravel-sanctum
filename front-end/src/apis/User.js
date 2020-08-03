@@ -16,8 +16,11 @@ export default {
 
   async logout() {
     await Csrf.getCookie();
-
-    return Api.post("/logout");
+    const idToken = localStorage.getItem('idToken');
+    const emailLogin = localStorage.getItem('email');
+    localStorage.removeItem('idToken');
+    localStorage.removeItem('email');
+    return Api.post("/logout", {idToken:idToken, emailLogin:emailLogin});
   },
 
   auth() {
