@@ -7,10 +7,12 @@
           <div class="form-group">
             <label>Name</label>
             <input type="text" class="form-control" v-model="book.name">
+            <span class="text-danger" v-if="errors.name">{{ errors.name[0] }}</span>
           </div>
           <div class="form-group">
             <label>Author</label>
             <input type="text" class="form-control" v-model="book.author">
+            <span class="text-danger" v-if="errors.author">{{ errors.author[0] }}</span>
           </div>
           <button type="submit" class="btn btn-primary">Update Book</button>
         </form>
@@ -25,7 +27,8 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      book: {}
+      book: {},
+      errors: []
     }
   },
   created() {
@@ -41,6 +44,11 @@ export default {
           .then((response) => {
             this.$router.push({name: 'AllBooks'})
           })
+          .catch(error => {
+            if (error.response.status === 422) {
+              this.errors = error.response.data.errors;
+            }
+          });
     }
   }
 }

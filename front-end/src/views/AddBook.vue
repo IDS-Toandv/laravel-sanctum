@@ -8,10 +8,12 @@
           <div class="form-group">
             <label>Name</label>
             <input type="text" class="form-control" v-model="book.name">
+            <span class="text-danger" v-if="errors.name">{{ errors.name[0] }}</span>
           </div>
           <div class="form-group">
             <label>Author</label>
             <input type="text" class="form-control" v-model="book.author">
+            <span class="text-danger" v-if="errors.author">{{ errors.author[0] }}</span>
           </div>
           <button type="submit" class="btn btn-primary">Add Book</button>
         </form>
@@ -27,7 +29,8 @@ export default {
   data() {
     return {
       book: {},
-      message: 'Add book'
+      message: 'Add book',
+      errors: []
     }
   },
   methods: {
@@ -36,8 +39,11 @@ export default {
           .then(response => (
               this.$router.push({name: 'AllBooks'})
           ))
-          .catch(error => console.log(error))
-          .finally(() => this.loading = false)
+          .catch(error => {
+            if (error.response.status === 422) {
+              this.errors = error.response.data.errors;
+            }
+          });
     }
   }
 }
