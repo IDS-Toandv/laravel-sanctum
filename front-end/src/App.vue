@@ -6,17 +6,16 @@
 </template>
 
 <script>
-import Navigation from "@/components/Navigation.vue";
-
-export default {
-  components: {
-    Navigation
-  }
-};
+  import Navigation from "@/components/Navigation.vue";
+  export default {
+    components: {
+      Navigation
+    }
+  };
 </script>
 
 <style>
-.h-screen {
-  height: 100vh;
-}
+  .h-screen {
+    height: 100vh;
+  }
 </style>

@@ -37,6 +37,7 @@ export default {
     login() {
       User.login(this.form)
         .then((resp) => {
+          console.log(resp);
           localStorage.setItem("idToken", resp.data.id_token);
           localStorage.setItem("email", resp.data.email);
           axios.defaults.headers.common['Authorization'] = "Bearer " + resp.data.token_access;

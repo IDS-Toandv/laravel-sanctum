@@ -38,7 +38,8 @@ export default {
       User.logout().then(() => {
         localStorage.removeItem("auth");
         this.isLoggedIn = false;
-          this.$router.push("/").catch(()=>{});
+        this.$router.push("/").catch(() => {
+        });
       });
     }
   }
