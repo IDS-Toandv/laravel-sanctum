@@ -1,11 +1,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Login from "../views/Login.vue";
-import Register from "../views/Register.vue";
-import AllBooks from "../views/AllBooks.vue";
-import AddBook from "../views/AddBook.vue";
-import EditBook from "../views/EditBook.vue";
-
+import Login from "../views/users/Login.vue";
+import Register from "../views/users/Register.vue";
+import AllBooks from "../views/books/AllBooks.vue";
+import AddBook from "../views/books/AddBook.vue";
+import EditBook from "../views/books/EditBook.vue";
+import ListUser from "../views/users/ListUser.vue";
+import EditProfile from "../views/users/EditProfile.vue";
 
 Vue.use(VueRouter);
 
@@ -44,6 +45,17 @@ const routes = [
     component:EditBook,
     meta: { authOnly: true }
   },
+  {
+    name:'ListUser',
+    path:'/list-users',
+    component:ListUser
+  },
+  {
+    name:'EditProfile',
+    path:'/edit-profile/:id',
+    component:EditProfile,
+    meta: { authOnly: true }
+  }
 ];
 
 const router = new VueRouter({

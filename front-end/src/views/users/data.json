@@ -1,0 +1,7 @@
+{
+  "name":
+    {"title":"your full name", "last":"Williams", "first": "Peter"}
+  ,
+  "location" : {"city": "hcm city"},
+  "dob" : {"date": "02/11/1991"}
+}

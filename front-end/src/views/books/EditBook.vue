@@ -34,8 +34,9 @@ export default {
   created() {
     axios.get(`http://localhost:8084/api/book/edit/${this.$route.params.id}`)
         .then((response) => {
-          this.book = response.data
-          // console.log(response.data);
+          this.book = response.data[0]
+          console.log(this.book.name);
+          console.log(this.book.author);
         })
   },
   methods: {

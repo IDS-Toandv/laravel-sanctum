@@ -14,6 +14,16 @@
           <span class="text-danger" v-if="errors.email">{{ errors.email[0] }}</span>
         </div>
         <div class="form-group">
+          <label for="role">Roles:</label>
+          <select v-model="form.role" class="form-control" id="role">
+            <option value="">----</option>
+            <option v-for="role in roles" :value="role.id">
+              {{ role.name }}
+            </option>
+          </select>
+          <span class="text-danger" v-if="errors.role">{{ errors.role[0] }}</span>
+        </div>
+        <div class="form-group">
           <label for="password">Password:</label>
           <input type="password" v-model="form.password" class="form-control" id="password"/>
           <span class="text-danger" v-if="errors.password">{{ errors.password[0] }}</span>
@@ -30,7 +40,8 @@
 </template>
 
 <script>
-import User from "../apis/User";
+import User from "../../apis/User";
+import axios from "axios";
 
 export default {
   data() {
@@ -38,13 +49,21 @@ export default {
       form: {
         name: "",
         email: "",
+        role:"",
         password: "",
         password_confirmation: ""
       },
+      roles:[],
       errors: []
     };
   },
-
+  created() {
+    axios.get('http://localhost:8084/api/list-roles')
+        .then(response => {
+          console.log(response.data);
+          this.roles = response.data
+        })
+  },
   methods: {
     register() {
       User.register(this.form)
@@ -53,6 +72,7 @@ export default {
           })
           .catch(error => {
             if (error.response.status === 422) {
+              console.log(error.response.data.errors);
               this.errors = error.response.data.errors;
             }
           });

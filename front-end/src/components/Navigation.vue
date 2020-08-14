@@ -9,6 +9,7 @@
         <router-link v-if="!isLoggedIn" class="nav-item nav-link" :to="{ name: 'Login' }">Login</router-link>
         <router-link v-if="!isLoggedIn" class="nav-item nav-link" :to="{ name: 'Register' }">Register</router-link>
         <router-link v-if="isLoggedIn" class="nav-item nav-link" :to="{ name: 'Add' }">Add Book</router-link>
+        <router-link v-if="isLoggedIn" class="nav-item nav-link" :to="{ name: 'ListUser' }">List User</router-link>
         <a class="nav-item nav-link" v-if="isLoggedIn" @click.prevent="logout" href="#">Logout</a>
       </ul>
     </div>

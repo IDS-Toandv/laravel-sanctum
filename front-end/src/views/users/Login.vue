@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import User from "../apis/User";
+import User from "../../apis/User";
 import axios from 'axios'
 export default {
   data() {
@@ -37,22 +37,19 @@ export default {
     login() {
       User.login(this.form)
         .then((resp) => {
-          console.log(resp);
           localStorage.setItem("idToken", resp.data.id_token);
           localStorage.setItem("email", resp.data.email);
+          localStorage.setItem("userId", resp.data.userId);
           axios.defaults.headers.common['Authorization'] = "Bearer " + resp.data.token_access;
           this.$root.$emit("login", true);
           localStorage.setItem("auth", "true");
           this.$router.push({ name: "AllBooks" });
         })
-        .catch(error => {
-            console.log(error);
-          if (error.response.status === 401) {
-            this.errors = error.response.data.errors;
-             this.$router.push("/").catch(()=>{});
-
-          }
-        });
+          .catch(error => {
+            if (error.response.status === 422 || error.response.status === 401) {
+              this.errors = error.response.data.errors;
+            }
+          });
     }
   }
 };

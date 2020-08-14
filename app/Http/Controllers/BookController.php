@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Contracts\BooksServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Resources\BookCollection;
-use App\Book;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Collection;
 
 class BookController extends Controller
 {
-    // all books
+    private $bookServiceInterface;
+    public function __construct(BooksServiceInterface $bookServiceInterface)
+    {
+        $this->bookServiceInterface = $bookServiceInterface;
+    }
+
+    /**
+     * @return Collection
+     */
     public function index()
     {
-        $books = Book::all()->toArray();
-        return array_reverse($books);
+        return $this->bookServiceInterface->getListBooks();
     }
 
     /**
@@ -28,13 +34,9 @@ class BookController extends Controller
             'author' => ['required'],
         ]);
 
-        $book = new Book([
-            'name' => $request->input('name'),
-            'author' => $request->input('author')
-        ]);
-        $book->save();
+        $statusCreate = $this->bookServiceInterface->createBook($request);
 
-        return response()->json('The book successfully added');
+        return response()->json(['status' => $statusCreate]);
     }
 
     /**
@@ -43,7 +45,7 @@ class BookController extends Controller
      */
     public function edit($id)
     {
-        $book = Book::find($id);
+        $book = $this->bookServiceInterface->getBookById($id);
         return response()->json($book);
     }
 
@@ -58,18 +60,18 @@ class BookController extends Controller
             'name' => ['required'],
             'author' => ['required'],
         ]);
-        $book = Book::find($id);
-        $book->update($request->all());
+        $statusUpdate = $this->bookServiceInterface->updateBook($request, $id);
 
-        return response()->json('The book successfully updated');
+        return response()->json(['status' => $statusUpdate]);
     }
 
-    // delete book
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
     public function delete($id)
     {
-        $book = Book::find($id);
-        $book->delete();
-
-        return response()->json('The book successfully deleted');
+        $statusDelete = $this->bookServiceInterface->deleteBook($id);
+        return response()->json(['status' => $statusDelete]);
     }
 }
